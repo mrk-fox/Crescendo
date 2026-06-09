@@ -1,6 +1,7 @@
 import numpy as np
 import sounddevice as sd
 from scipy.fftpack import fft
+import datetime
 
 SAMPLE_RATE = 44100   # hz
 DURATION    = 0.1    # sec per chunk
@@ -19,7 +20,7 @@ cs_inb_heard = False
 start_rx = False
 pass_key = False
 reset_todo = False
-
+twoto = 0
 
 
 def get_dominant_frequency(audio_chunk, sample_rate):
@@ -73,7 +74,7 @@ def save_data():
         elif(b == False):
             o = o + "0"
         else:
-            o = o + "2"
+            o = o + str(twoto)
     return o
 
 
@@ -102,16 +103,18 @@ def reset():
         cs_inb_heard = False
         start_rx = False
         pass_key = False
-        print("Internal values reset completed.")
+        print(tr() + "Internal values reset completed.")
         reset_todo = False
     
-
+def tr():
+    x = "[" + str(datetime.datetime.now().strftime("%H:%M:%S.%f")) + "]: "
+    return x
 
 
 def run():
-    global decoded, cs_inb_heard, start_rx, pass_key, cs_c_cpl, reset_todo
+    global decoded, cs_inb_heard, start_rx, pass_key, cs_c_cpl, reset_todo, data
 
-    print("Listening... (Ctrl+C to stop)")
+    print(tr() + "Started audio input processing. KeyboardInterrupt: 'CTRL+C'")
 
     with sd.InputStream(samplerate=SAMPLE_RATE, channels=1, dtype="float32") as stream:
         try:
@@ -126,17 +129,16 @@ def run():
                         start_rx = True
                         pass_key = True
                         reset_todo = True
-
-                        print("--------------------Data inbound--------------------")
+                        print("")
+                        print(tr() + "--------------------Data inbound--------------------")
                     elif(read_data(freq)[0] == "d" and pass_key == True): #data
                         write_data(read_data(freq)[1], read_data(freq)[2])
                     elif(read_data(freq)[0] == "n" and pass_key == True): #new byte
                         data = save_data()
                         decoded = decoded + data
-                        print("Current data RX: " + decoded)
+                        print(tr() + "RX: " + data) #+ decoded)
                     elif(read_data(freq)[0] == "c" and cs_inb_heard == False and pass_key == True): #checksum inbound
                         decoded_data = decoded
-                        print("saved_decoded " + decoded_data)
                         decoded = ""
                         cs_inb_heard = True
                     elif(read_data(freq)[0] == "e" and cs_c_cpl == False): #end
@@ -146,19 +148,31 @@ def run():
                             except Exception:
                                 rx_checksum = 0
                             checksum_val = calc_checksum(decoded_data)
-                            print("--------------------RX Finished--------------------")
+                            print(tr() + "--------------------RX Finished--------------------")
 
                             if (rx_checksum == checksum_val):
-                                print("Checksums match!")
+                                print(tr() + "CHECKSUM BLOCK")
+                                print("     Checksums match!")
+                                print("")
                                 cs_c_cpl = True  
                             else:
-                                print("Checksums do not match!")
-                                print("Checksum of the data:" + str(checksum_val))
-                                print("Checksum of the ChRX:" + str(rx_checksum))      
+                                print(tr() + "CHECKSUM BLOCK")
+                                print("     Checksums do not match!")
+                                print("     Checksum of the data:" + str(checksum_val))
+                                print("     Checksum of the ChRX:" + str(rx_checksum))     
+                                print("") 
                             print("Final data: " + decoded_data)
                             print("UTF-8 Message: " + translate(decoded_data))
-                            print("--------------------Cycle End--------------------")
+                            print(tr() + "--------------------Cycle End--------------------")
                         reset()
                         
         except KeyboardInterrupt:
-            print("Stopped.")
+            if (len(decoded) != 0):
+                print("")
+                print(tr() + "--------------------RX Interrupted--------------------")
+                print(tr() + "Datastream interrupted! Recovering...")
+
+                print("Final data: " + decoded)
+                print(tr() + "--------------------Cycle End--------------------")
+
+            print(tr() + "Stopped.")

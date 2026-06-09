@@ -20,3 +20,13 @@ Also, this model imposes certain functional frequencies designating functional e
 
 [MS][byte 1][byte 2]...[byte x][CF][byte 1][ME]
 
+## Features
+
+- Redundancy against bit skip
+- Checksum check
+- Low-level data output
+- FTT for dominant frequency analysis
+- Center-frequency driven frequency calculation
+
+## License
+

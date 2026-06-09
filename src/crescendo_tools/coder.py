@@ -8,11 +8,11 @@ sample_rate = 44100
 symbol_duration = 0.1  # 100 ms
 center_freq = 1200
 
-# position of bit * 100 + 400 for 0 and - 400 for 1
+# position of bit * 100 + 400 for 0 and - 
 
 def str_to_bin(text):
     return ''.join(format(byte, '08b') for byte in text.encode('utf-8'))
-    # return '1111111100000000'
+    # return '1111111100000000' #debug
 
 waveform = np.array([], dtype=np.float32)
 
@@ -34,7 +34,7 @@ def write_msg(binary, duration):
         byte += bit
         l = 0
         if len(byte) == 8:
-            print("Byte: " + byte)
+            #print("Byte: " + byte) #debug
             l = 0
             for i in byte:
                 if i == '0':
