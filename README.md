@@ -2,12 +2,16 @@
 Carrier-frequency defined, arpeggiated data-to-audio modulation
 
 ## Introductions
-Data transmission over radio requires high rates of reliability and redundancy. The given repository demostrates a redundant method of data transmissions to prevent bit jumping through byte-bound position modulation.
+Data transmission over radio requires high rates of reliability and redundancy. The given repository demostrates a redundant method of data transmissions to prevent bit jumping through byte-bound position frequency modulation. The output is currently bound to the OS selected output audio.
 
 Each bit in the set $D$ , being a set of binary data with certain length gets split into 8-bit packets (bytes). Each bit in the byte gets a freqency assigned based on the position inside the byte and the boolean value. 
+
 $F = F_c + b \cdot F_s$
+
 for the 0 state of the bit and
+
 $F = F_c - b \cdot F_s$
+
 for the 1 state of  the bit.
 
 Also, this model imposes certain functional frequencies designating functional elements of the packet.
