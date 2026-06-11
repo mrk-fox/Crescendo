@@ -56,3 +56,4 @@ Also, this model imposes certain functional frequencies designating functional e
 
 ## License
 
+GNU General Public License 3.0
