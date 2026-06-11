@@ -7,11 +7,18 @@
 ░░███     ███ ░███     ░███░░░   ░░░░███░███  ███░███░░░   ░███ ░███ ░███ ░███ ░███ ░███
  ░░█████████  █████    ░░██████  ██████ ░░██████ ░░██████  ████ █████░░████████░░██████
   ░░░░░░░░░  ░░░░░      ░░░░░░  ░░░░░░   ░░░░░░   ░░░░░░  ░░░░ ░░░░░  ░░░░░░░░  ░░░░░░
+
+
+CRESCENDO v1.1
+Developed by Mark Scharonow
+https://hackclub.com
+https://github.com/mrk-fox/Crescendo
 ```
 
-
-# Crescendo
 Carrier-frequency defined, arpeggiated data-to-audio modulation
+
+> [!IMPORTANT]
+> This project is under development. Suggestings and testing feedbacks are welcome!
 
 ## Introductions
 Data transmission over radio requires high rates of reliability and redundancy. The given repository demostrates a redundant method of data transmissions to prevent bit jumping through byte-bound position frequency modulation. The output is currently bound to the OS selected output audio.
@@ -27,15 +34,18 @@ $F = F_c - b \cdot F_s$
 for the 1 state of  the bit.
 
 Also, this model imposes certain functional frequencies designating functional elements of the packet.
+
+```
 300 Hz - Message Start (MS)
 2100 Hz - Message End (ME)
 1200 Hz - Bit Separator (BS)
 2200 Hz - Checksum announce flag (CF)
+```
 
 ## Packet structure
-
+```
 [MS][byte 1][byte 2]...[byte x][CF][byte 1][ME]
-
+```
 ## Features
 
 - Redundancy against bit skip
