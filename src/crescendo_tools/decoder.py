@@ -129,6 +129,7 @@ def tr():
 
 def run():
     global decoded, cs_inb_heard, start_rx, pass_key, cs_c_cpl, reset_todo, data
+    decoded_data = ""
 
     print(tr() + "Started audio input processing. KeyboardInterrupt: 'CTRL+C'")
 

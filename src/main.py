@@ -23,8 +23,9 @@ parser = argparse.ArgumentParser(description="Crescendo CLI")
 parser.add_argument('-e', '--encode', nargs='+', help="Input a string of UTF-8 text to encode.")
 parser.add_argument('-d', '--decode', action='store_true', help='Decode input stream. Current audio interace is the default source.')
 parser.add_argument('-sf', '--savefile', nargs='+', help='Save the encoded frequencies in a generated audio file.')
-parser.add_argument('-n', '--name', help='Filename variable for the -sf flag.')
+parser.add_argument('-n', '--name', help='Filename variable for the -sf flag exclusively.')
 parser.add_argument('-l', '--license', action='store_true', help='Shows the license Crescendo is under.')
+parser.add_argument('-dm', '--direct_mode', action='store_true', help='Activates the direct input mode for encoding.')
 
 
 print('   █████████                                                              █████')
@@ -59,4 +60,5 @@ elif args.savefile:
     coder.wav(' '.join(args.savefile), args.name)
 elif args.license:
     license_show.run()
-
+elif args.direct_mode:
+    coder.direct()

@@ -17,6 +17,7 @@
 import numpy as np
 import sounddevice as sd
 import wave
+import datetime
 
 # Functional Frequencies: 300 - Start, 2100 - Stop, 1200 - Bit Sep, 2200 - Checksum announce.
 
@@ -25,6 +26,10 @@ symbol_duration = 0.1  # 100 ms
 center_freq = 1200
 
 # position of bit * 100 + 400 for 0 and - 
+
+def tr():
+    x = "[" + str(datetime.datetime.now().strftime("%H:%M:%S.%f")) + "]: "
+    return x
 
 def str_to_bin(text):
     return ''.join(format(byte, '08b') for byte in text.encode('utf-8'))
@@ -72,12 +77,12 @@ def checksum(bin):
 
 
 def generate(i_text):
-    print("--------------------Encoding Data--------------------")
+    print(tr() + "--------------------Encoding Data--------------------")
 
     global waveform
     waveform = np.array([], dtype=np.float32)
     binary = str_to_bin(i_text)
-    print(binary)
+    print(tr() + binary)
 
     tone_add(300, 5)  # Start tone
     tone_add(0, 0.1)
@@ -92,7 +97,7 @@ def generate(i_text):
 
 def run(i_text):
     generate(i_text)
-    print("-----------------Playing Encoded Data-----------------")
+    print(tr() + "-----------------Playing Encoded Data-----------------")
     sd.play(waveform, sample_rate)
     sd.wait()    
 
@@ -101,7 +106,7 @@ def wav(i_text, filename):
     generate(i_text)
     # float32 to int16
     audio_int16 = np.int16(waveform * 32767)
-    print("--------------------Generating File--------------------")
+    print(tr() + "--------------------Generating File--------------------")
 
     with wave.open(filename, 'wb') as wf:
         wf.setnchannels(1)      # mono
@@ -109,4 +114,12 @@ def wav(i_text, filename):
         wf.setframerate(sample_rate)
         wf.writeframes(audio_int16.tobytes())
 
-    print(f"Saved {filename}")
+    print(tr() + f"Saved {filename}")
+
+def direct():
+    try:
+        while True:
+            direct_input = input("> ")
+            run(direct_input)
+    except KeyboardInterrupt:
+        print(tr() + "Terminating...")
