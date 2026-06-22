@@ -54,6 +54,12 @@ Also, this model imposes certain functional frequencies designating functional e
 - FTT for dominant frequency analysis
 - Center-frequency driven frequency calculation
 
+## Deployment
+1. Download the repository and unzip it
+2. Download python from python.org
+3. `cd [Project Root Directory]/src`
+4. `py -m main.py -h` to get the help page with the possible commands
+
 ## License
 
 GNU General Public License 3.0
