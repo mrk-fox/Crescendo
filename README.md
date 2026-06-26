@@ -54,6 +54,25 @@ Also, this model imposes certain functional frequencies designating functional e
 - FTT for dominant frequency analysis
 - Center-frequency driven frequency calculation
 
+## Usage
+
+There are already a few commands implemented:
+crescendo.exe
+
+
+-d: Listens for Audio with the audio interface
+
+-e [String]: Encoding the string to the current audio output
+
+-sf [String] -n [Filename].wav: Writes the encoded audio to a file into the ordner crescendo.exe is in
+
+-h: Displays help with this information
+
+-l: Shows the license information
+
+
+You can run all of these commands by cd'ing into the crescendo.exe folder and typing crescendo.exe [Flags] into the command line.
+
 ## Deployment
 1. Download the repository and unzip it
 2. Download python from python.org
